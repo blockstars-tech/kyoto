@@ -1,0 +1,17 @@
+node_modules
+.env
+
+#Hardhat files
+cache
+typechain
+artifacts
+
+.vscode
+Kyoto.sol.zip
+.eslintignore
+.eslintrc.js
+.env.template
+.prettierignore
+.prettierrc
+.solhintignore
+.solhint.json
