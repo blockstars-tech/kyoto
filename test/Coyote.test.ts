@@ -1,9 +1,10 @@
+import { artifacts, assert } from "hardhat";
 import {
   CoyoteContract,
   CoyoteInstance,
   UniswapV2Router02Contract,
   UniswapV2Router02Instance,
-} from "../typechain";
+} from "../typechain-types";
 import BN from "bn.js";
 
 const truffleAssert = require("truffle-assertions");
@@ -19,7 +20,7 @@ const constants = {
   MIN_INT256: new BN("2").pow(new BN("255")).mul(new BN("-1")),
 };
 
-contract("CoyoteToken", (accounts) => {
+describe("CoyoteToken", (accounts) => {
   const [
     ownerAddr,
     teamAddr,

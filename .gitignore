@@ -4,6 +4,7 @@ node_modules
 #Hardhat files
 cache
 typechain
+typechain-types
 artifacts
 
 .vscode

@@ -124,7 +124,7 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         _rOwned[reserveAddress] = onePercentR * 20;
 
         IPancakeRouter02 _pancakeswapV2Router = IPancakeRouter02(
-            0x10ED43C718714eb63d5aA57B78B54704E256024E // This address is for the Binance Smart Chain
+            0xD99D1c33F9fC3444f8101754aBC46c52416550D1
         );
         // Create a uniswap pair for this new token
         pancakeswapV2Pair = IPancakeV2Factory(_pancakeswapV2Router.factory())

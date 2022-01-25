@@ -1,5 +1,8 @@
 import "@nomiclabs/hardhat-truffle5";
 import "@typechain/hardhat";
+import "@nomiclabs/hardhat-ethers";
+import "@nomiclabs/hardhat-etherscan";
+
 import { HardhatUserConfig } from "hardhat/types";
 
 const config: HardhatUserConfig = {
@@ -43,10 +46,20 @@ const config: HardhatUserConfig = {
         accountsBalance: "1000000000000000000000000",
       }
     },
+    testnet: {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      chainId: 97,
+      gas: 2100000,
+      gasPrice: 20000000000,
+      accounts: { mnemonic: '' }
+    },
     node_network: {
       url: "http://127.0.0.1:8545",
     },
   },
+  etherscan: {
+    apiKey: '14C6P9NP9U3Y4T3II3ZFSA49929XHT8R3U'
+  }
 };
 
 export default config;
