@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IPancakeRouter02.sol";
 import "./interfaces/IPancakeV2Factory.sol";
 
-contract Kyoto is IERC20, IERC20Metadata, Context, Ownable {
+contract Coyote is IERC20, IERC20Metadata, Context, Ownable { 
     struct UserBalanceVolume {
         uint256 amount;
         uint256 lastUpdate;
@@ -94,8 +94,8 @@ contract Kyoto is IERC20, IERC20Metadata, Context, Ownable {
         address _publicSaleAddress,
         address _reserveAddress
     ) {
-        _name = "Kyoto";
-        _symbol = "KYOTO";
+        _name = "Coyote";
+        _symbol = "YOTE";
 
         _nextResetTimesamp = block.timestamp + 1 days;
 
@@ -103,7 +103,7 @@ contract Kyoto is IERC20, IERC20Metadata, Context, Ownable {
         publicSaleAddress = _publicSaleAddress;
         reserveAddress = _reserveAddress;
 
-        // 50% will be burn instantly
+        // 50% will be burned instantly
         _rTotal /= 2;
         _tTotal /= 2;
 
@@ -124,7 +124,7 @@ contract Kyoto is IERC20, IERC20Metadata, Context, Ownable {
         _rOwned[reserveAddress] = onePercentR * 20;
 
         IPancakeRouter02 _pancakeswapV2Router = IPancakeRouter02(
-            0x10ED43C718714eb63d5aA57B78B54704E256024E
+            0x10ED43C718714eb63d5aA57B78B54704E256024E // This address is for the Binance Smart Chain
         );
         // Create a uniswap pair for this new token
         pancakeswapV2Pair = IPancakeV2Factory(_pancakeswapV2Router.factory())
@@ -142,7 +142,7 @@ contract Kyoto is IERC20, IERC20Metadata, Context, Ownable {
         emit Transfer(address(0), teamAddress, onePercentT * 15);
         emit Transfer(address(0), publicSaleAddress, onePercentT * 63);
         emit Transfer(address(0), reserveAddress, onePercentT * 20);
-        emit Transfer(address(this), address(0), _tTotal);
+        emit Transfer(address(this), address(0), _tTotal); // this is a transfer to represent the burn
     }
 
     /**
