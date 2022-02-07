@@ -373,6 +373,14 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         return rAmount / currentRate;
     }
 
+    function excludeFromFee(address account) public onlyOwner {
+        _isExcludedFromFee[account] = true;
+    }
+
+    function includeInFee(address account) public onlyOwner {
+        _isExcludedFromFee[account] = false;
+    }
+    
     function addPancakeswapV2PairAddress(address account) public onlyOwner {
         _isPancakeswapV2Pair[account] = true;
     }
