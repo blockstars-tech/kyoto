@@ -4,7 +4,7 @@ import {
   CoyoteInstance,
   UniswapV2Router02Contract,
   UniswapV2Router02Instance,
-} from "../typechain-types";
+} from "../typechain";
 import BN from "bn.js";
 
 const truffleAssert = require("truffle-assertions");
@@ -20,7 +20,7 @@ const constants = {
   MIN_INT256: new BN("2").pow(new BN("255")).mul(new BN("-1")),
 };
 
-describe("CoyoteToken", (accounts) => {
+describe("CoyoteToken", () => {
   const [
     ownerAddr,
     teamAddr,
