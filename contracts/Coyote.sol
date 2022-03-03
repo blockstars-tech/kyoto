@@ -30,9 +30,7 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
     mapping(address => uint256) private _rOwned;
     mapping(address => uint256) private _tOwned;
 
-    mapping(address => bool) private _isExcludedFromFee;
-
-    uint256 private constant MAX = ~uint256(0);
+    uint256 private constant MAX = type(uint256).max;
     uint256 private _tTotal = 2500000000000000 * 10**18;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
@@ -123,8 +121,9 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         // 20% Reserve
         _rOwned[reserveAddress] = onePercentR * 20;
 
+        // This address is for the Binance Smart Chain 0x10ED43C718714eb63d5aA57B78B54704E256024E
         IPancakeRouter02 _pancakeswapV2Router = IPancakeRouter02(
-            0xD99D1c33F9fC3444f8101754aBC46c52416550D1
+            0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3
         );
         // Create a uniswap pair for this new token
         pancakeswapV2Pair = IPancakeV2Factory(_pancakeswapV2Router.factory())
@@ -132,11 +131,6 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         _isPancakeswapV2Pair[pancakeswapV2Pair] = true;
         // Set the rest of the contract variables
         pancakeswapV2Router = _pancakeswapV2Router;
-
-        // Exclude Owner, This contract and PanCakeRouter from fees
-        _isExcludedFromFee[owner()] = true;
-        _isExcludedFromFee[address(this)] = true;
-        _isExcludedFromFee[address(_pancakeswapV2Router)] = true;
 
         emit Transfer(address(0), _msgSender(), onePercentT * 2);
         emit Transfer(address(0), teamAddress, onePercentT * 15);
@@ -373,14 +367,6 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         return rAmount / currentRate;
     }
 
-    function excludeFromFee(address account) public onlyOwner {
-        _isExcludedFromFee[account] = true;
-    }
-
-    function includeInFee(address account) public onlyOwner {
-        _isExcludedFromFee[account] = false;
-    }
-    
     function addPancakeswapV2PairAddress(address account) public onlyOwner {
         _isPancakeswapV2Pair[account] = true;
     }
@@ -539,10 +525,19 @@ contract Coyote is IERC20, IERC20Metadata, Context, Ownable {
         }
 
         // indicates if fee should be deducted from transfer
-        bool takeFee = true;
+        bool takeFee;
 
-        if (_isExcludedFromFee[from] || _isExcludedFromFee[to]) {
-            takeFee = false;
+        // If sender ot recipient is not owner and is not contract fee must not be taken
+        // Take fee only in buying or selling operation
+        if (from != address(this) && to != address(this) && from != owner() && to != owner()) {
+            // buy
+            if (_isPancakeswapV2Pair[from] && to != address(pancakeswapV2Router)) {
+                takeFee = true;
+            }
+            // sell 
+            else if (_isPancakeswapV2Pair[to]) {
+                takeFee = true;
+            }
         }
 
         // transfer amount, it will take tax, burn, liquidity, marketing fee

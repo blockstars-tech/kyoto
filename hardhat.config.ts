@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import "@nomiclabs/hardhat-truffle5";
 import "@typechain/hardhat";
 import "@nomiclabs/hardhat-ethers";
@@ -47,18 +49,17 @@ const config: HardhatUserConfig = {
       }
     },
     testnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      url: process.env.BSC_TESTNET_URL,
       chainId: 97,
-      gas: 2100000,
       gasPrice: 20000000000,
-      accounts: { mnemonic: '' }
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
     node_network: {
       url: "http://127.0.0.1:8545",
     },
   },
   etherscan: {
-    apiKey: '14C6P9NP9U3Y4T3II3ZFSA49929XHT8R3U'
+    apiKey: process.env.ETHERSCAN_API_KEY,
   }
 };
 
